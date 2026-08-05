@@ -81,3 +81,60 @@ def get_confidence(results):
     if avg > 0.4:
         return "medium"
     return "low"
+
+
+def calibrate_confidence(results, answer, context):
+    # combine retrieval score and a cheap signal from the answer
+    if not results:
+        return {"label": "none", "score": 0.0, "signals": {}}
+
+    sim = sum(r["score"] for r in results) / len(results)
+    n_unique = len(set(r["source"] for r in results))
+    diversity = min(n_unique / 3.0, 1.0)
+
+    # check if the answer says it doesn't have info
+    refused = "I don't have enough information" in answer or "I do not have enough information" in answer
+    coverage = 0.3 if refused else 0.8
+
+    score = 0.5 * sim + 0.2 * diversity + 0.3 * coverage
+    score = max(0.0, min(1.0, score))
+
+    if score > 0.6:
+        label = "high"
+    elif score > 0.4:
+        label = "medium"
+    else:
+        label = "low"
+
+    return {
+        "label": label,
+        "score": round(score, 3),
+        "signals": {
+            "similarity": round(sim, 3),
+            "diversity": round(diversity, 3),
+            "coverage": round(coverage, 3),
+        },
+    }
+
+
+def verify_citations(answer, results):
+    # find [1], [2], etc in the answer and check they map to retrieved chunks
+    import re
+    cited = re.findall(r"\[(\d+)\]", answer)
+    n_chunks = len(results)
+    verified = []
+    unverified = []
+    for c in cited:
+        try:
+            i = int(c) - 1
+            if 0 <= i < n_chunks:
+                verified.append(int(c))
+            else:
+                unverified.append(int(c))
+        except ValueError:
+            unverified.append(c)
+    return {
+        "verified": sorted(set(verified)),
+        "unverified": sorted(set(unverified)),
+        "total_cited": len(set(cited)),
+    }
