@@ -4,8 +4,9 @@ from pathlib import Path
 
 from ingest import ingest_file
 from embed import VectorStore
-from retrieve import search, format_context, get_sources, get_confidence
-from generate import generate, check
+from retrieve import hybrid_search, format_context, get_sources, calibrate_confidence, verify_citations
+from generate import generate, check, rerank
+from synthesis import detect_contradictions, synthesize
 
 
 def do_ingest(args):
@@ -26,22 +27,35 @@ def do_query(args):
         print("ollama not running, start it first")
         return
 
-    results = search(args.question, k=args.top_k)
+    if args.rerank:
+        results = hybrid_search(args.question, k=args.top_k * 2)
+        results = rerank(args.question, results, top_n=args.top_k)
+    else:
+        results = hybrid_search(args.question, k=args.top_k)
+
     if not results:
         print("no chunks found")
         return
 
     ctx = format_context(results)
-    print(f"confidence: {get_confidence(results)}")
+    ans = generate(ctx, args.question)
+
+    conf = calibrate_confidence(results, ans, ctx)
+    cites = verify_citations(ans, results)
+
+    print(f"confidence: {conf['label']} ({conf['score']})")
     print(f"sources: {', '.join(get_sources(results))}\n")
 
-    ans = generate(ctx, args.question)
     print(f"answer: {ans}\n")
+
+    if cites["total_cited"]:
+        print(f"citations: verified {len(cites['verified'])}, unverified {len(cites['unverified'])}")
 
     if args.show_chunks:
         print("chunks used:")
         for i, r in enumerate(results):
-            print(f"  {i+1}. [{r['score']:.3f}] {r['source']}: {r['text'][:80]}...")
+            rs = f" rerank={r['rerank_score']:.3f}" if r.get("rerank_score") else ""
+            print(f"  {i+1}. [{r['score']:.3f}{rs}] {r['source']}: {r['text'][:80]}...")
 
 
 def do_status(args):
@@ -59,18 +73,50 @@ def do_clear(args):
     print("cleared")
 
 
+def do_compare(args):
+    ok, _ = check()
+    if not ok:
+        print("ollama not running, start it first")
+        return
+
+    results = hybrid_search(args.question, k=args.top_k)
+    if not results:
+        print("no chunks found")
+        return
+
+    claims = [{"text": r["text"], "source": r["source"], "page": r.get("page")} for r in results]
+    agreements = detect_contradictions(claims, args.question)
+    ans = synthesize(args.question, claims, agreements)
+
+    print(f"answer: {ans}\n")
+    print(f"sources: {', '.join(get_sources(results))}\n")
+
+    if agreements:
+        print("agreements found:")
+        for a in agreements:
+            level = a.get("level", "unknown")
+            srcs = ", ".join(a.get("sources", []))
+            claim = a.get("claim", "")[:80]
+            print(f"  [{level}] {srcs}: {claim}")
+    else:
+        print("no agreements parsed")
+
+
 def do_export(args):
-    results = search(args.question, k=args.top_k)
+    results = hybrid_search(args.question, k=args.top_k)
     if not results:
         print("no chunks found")
         return
     ctx = format_context(results)
     ans = generate(ctx, args.question)
+    conf = calibrate_confidence(results, ans, ctx)
+    cites = verify_citations(ans, results)
     data = {
         "question": args.question,
         "answer": ans,
-        "confidence": get_confidence(results),
+        "confidence": conf,
         "sources": get_sources(results),
+        "citations": cites,
         "chunks": results,
     }
     with open(args.output, "w", encoding="utf-8") as f:
@@ -89,6 +135,7 @@ def main():
     pq = sub.add_parser("query")
     pq.add_argument("question")
     pq.add_argument("--top-k", "-k", type=int, default=5)
+    pq.add_argument("--rerank", "-r", action="store_true")
     pq.add_argument("--show-chunks", "-s", action="store_true")
     pq.set_defaults(func=do_query)
 
@@ -97,6 +144,11 @@ def main():
 
     pc = sub.add_parser("clear")
     pc.set_defaults(func=do_clear)
+
+    pcm = sub.add_parser("compare")
+    pcm.add_argument("question")
+    pcm.add_argument("--top-k", "-k", type=int, default=5)
+    pcm.set_defaults(func=do_compare)
 
     pe = sub.add_parser("export")
     pe.add_argument("question")
