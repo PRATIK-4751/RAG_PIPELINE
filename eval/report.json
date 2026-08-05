@@ -4,6 +4,8 @@
   "pass_rate": 0.7,
   "avg_faithfulness": 1.0,
   "avg_relevance": 1.0,
+  "retrieval_hit_rate": null,
+  "avg_citation_coverage": null,
   "results": [
     {
       "question": "What is RAG?",
@@ -12,23 +14,26 @@
         "augmented",
         "generation"
       ],
-      "answer": "Based on the provided context, a retrieval augmented generation (RAG) system retrieves relevant context from documents and generates accurate answers using embeddings to find similar text chunks. These pipelines are useful for document Q&A systems as they combine the power of LLMs with factual retrieval to provide grounded answers based on actual documents.",
-      "confidence": "medium",
-      "confidence_score": 0.59,
+      "expected_sources": [],
+      "answer": "RAG (retrieval augmented generation) is a system that retrieves relevant context from documents and generates accurate answers using embeddings to find similar text chunks.",
+      "confidence": "high",
+      "confidence_score": 0.692,
       "keyword_overlap": 1.0,
       "llm_judge": {
         "faithfulness": 1.0,
         "relevance": 1.0
       },
+      "retrieval_hit": null,
+      "citation_coverage": null,
       "citations": {
         "verified": [],
         "unverified": [],
         "total_cited": 0
       },
       "sources": [
-        "sample2.txt (page None)",
         "sample.txt (page None)",
-        "Transparent_AI_Depression_Screening_Proposal.pdf (page 11)"
+        "sample2.txt (page None)",
+        "Transparent_AI_Depression_Screening_Proposal.pdf (page 5)"
       ]
     },
     {
@@ -39,14 +44,17 @@
         "chunks",
         "embeddings"
       ],
-      "answer": "Documents are first ingested and split into chunks, and then each chunk is converted to a vector embedding.",
-      "confidence": "medium",
-      "confidence_score": 0.589,
+      "expected_sources": [],
+      "answer": "Documents are ingested and split into chunks, and each chunk is then converted to a vector embedding.",
+      "confidence": "high",
+      "confidence_score": 0.65,
       "keyword_overlap": 0.75,
       "llm_judge": {
         "faithfulness": 1.0,
         "relevance": 1.0
       },
+      "retrieval_hit": null,
+      "citation_coverage": null,
       "citations": {
         "verified": [],
         "unverified": [],
@@ -55,7 +63,7 @@
       "sources": [
         "sample.txt (page None)",
         "sample2.txt (page None)",
-        "Transparent_AI_Depression_Screening_Proposal.pdf (page 4)"
+        "Transparent_AI_Depression_Screening_Proposal.pdf (page 5)"
       ]
     },
     {
@@ -67,23 +75,26 @@
         "reduces",
         "hallucination"
       ],
-      "answer": "The benefits of using RAG are:\n\n*   **Main benefit:** Grounded answers based on actual documents, which reduces hallucination and provides source citations, allowing users to verify answers by checking original documents.\n*   **Benefits of advanced RAG:** Higher accuracy on complex questions, better handling of multi-document queries, reduced hallucination through structured citation, and improved user trust through transparency.",
+      "expected_sources": [],
+      "answer": "The benefits of using RAG are as follows:\n\n*   **General RAG:** It provides grounded answers based on actual documents, which reduces hallucination and provides source citations, allowing users to verify answers by checking original documents.\n*   **Advanced RAG:**\n    *   Higher accuracy on complex questions\n    *   Better handling of multi-document queries\n    *   Reduced hallucination through structured citation\n    *   Improved user trust through transparency",
       "confidence": "high",
-      "confidence_score": 0.611,
+      "confidence_score": 0.672,
       "keyword_overlap": 1.0,
       "llm_judge": {
         "faithfulness": 1.0,
         "relevance": 1.0
       },
+      "retrieval_hit": null,
+      "citation_coverage": null,
       "citations": {
         "verified": [],
         "unverified": [],
         "total_cited": 0
       },
       "sources": [
-        "sample.txt (page None)",
         "sample2.txt (page None)",
-        "Transparent_AI_Depression_Screening_Proposal.pdf (page 11)"
+        "sample.txt (page None)",
+        "Transparent_AI_Depression_Screening_Proposal.pdf (page 12)"
       ]
     },
     {
@@ -94,23 +105,26 @@
         "context",
         "LLM"
       ],
+      "expected_sources": [],
       "answer": "When a user asks a question, the system finds the most similar chunks and uses them as context for the LLM.",
       "confidence": "medium",
-      "confidence_score": 0.522,
+      "confidence_score": 0.553,
       "keyword_overlap": 1.0,
       "llm_judge": {
         "faithfulness": 1.0,
         "relevance": 1.0
       },
+      "retrieval_hit": null,
+      "citation_coverage": null,
       "citations": {
         "verified": [],
         "unverified": [],
         "total_cited": 0
       },
       "sources": [
+        "Transparent_AI_Depression_Screening_Proposal.pdf (page 7)",
         "sample.txt (page None)",
-        "Transparent_AI_Depression_Screening_Proposal.pdf (page 11)",
-        "Transparent_AI_Depression_Screening_Proposal.pdf (page 5)"
+        "Transparent_AI_Depression_Screening_Proposal.pdf (page 3)"
       ]
     },
     {
@@ -119,66 +133,17 @@
         "chunks",
         "overlapping"
       ],
+      "expected_sources": [],
       "answer": "Documents are ingested and split into chunks.",
-      "confidence": "medium",
-      "confidence_score": 0.536,
+      "confidence": "high",
+      "confidence_score": 0.668,
       "keyword_overlap": 0.5,
       "llm_judge": {
         "faithfulness": 1.0,
         "relevance": 1.0
       },
-      "citations": {
-        "verified": [],
-        "unverified": [],
-        "total_cited": 0
-      },
-      "sources": [
-        "sample.txt (page None)",
-        "sample2.txt (page None)"
-      ]
-    },
-    {
-      "question": "What is the purpose of embeddings?",
-      "expected_keywords": [
-        "vector",
-        "numerical",
-        "similarity"
-      ],
-      "answer": "Embeddings are used to find similar text chunks.",
-      "confidence": "medium",
-      "confidence_score": 0.531,
-      "keyword_overlap": 0.0,
-      "llm_judge": {
-        "faithfulness": 1.0,
-        "relevance": 1.0
-      },
-      "citations": {
-        "verified": [],
-        "unverified": [],
-        "total_cited": 0
-      },
-      "sources": [
-        "sample.txt (page None)",
-        "Transparent_AI_Depression_Screening_Proposal.pdf (page 11)",
-        "Transparent_AI_Depression_Screening_Proposal.pdf (page 2)"
-      ]
-    },
-    {
-      "question": "Why use chunking in RAG systems?",
-      "expected_keywords": [
-        "context",
-        "window",
-        "limited",
-        "focused"
-      ],
-      "answer": "Chunking is used in RAG systems so that documents can be ingested and split into chunks, which are then converted to vector embeddings. This allows the system to find the most similar chunks when a user asks a question and use them as context for the LLM.",
-      "confidence": "high",
-      "confidence_score": 0.656,
-      "keyword_overlap": 0.25,
-      "llm_judge": {
-        "faithfulness": 1.0,
-        "relevance": 1.0
-      },
+      "retrieval_hit": null,
+      "citation_coverage": null,
       "citations": {
         "verified": [],
         "unverified": [],
@@ -191,21 +156,23 @@
       ]
     },
     {
-      "question": "Can users verify the answers?",
+      "question": "What is the purpose of embeddings?",
       "expected_keywords": [
-        "source",
-        "citations",
-        "documents",
-        "original"
+        "vector",
+        "numerical",
+        "similarity"
       ],
-      "answer": "Yes, users can verify answers by checking the original documents.",
+      "expected_sources": [],
+      "answer": "Embeddings are used to find similar text chunks.",
       "confidence": "medium",
-      "confidence_score": 0.566,
-      "keyword_overlap": 0.5,
+      "confidence_score": 0.594,
+      "keyword_overlap": 0.0,
       "llm_judge": {
         "faithfulness": 1.0,
         "relevance": 1.0
       },
+      "retrieval_hit": null,
+      "citation_coverage": null,
       "citations": {
         "verified": [],
         "unverified": [],
@@ -213,9 +180,68 @@
       },
       "sources": [
         "sample.txt (page None)",
-        "Transparent_AI_Depression_Screening_Proposal.pdf (page 12)",
-        "Transparent_AI_Depression_Screening_Proposal.pdf (page 11)",
+        "Transparent_AI_Depression_Screening_Proposal.pdf (page 5)"
+      ]
+    },
+    {
+      "question": "Why use chunking in RAG systems?",
+      "expected_keywords": [
+        "context",
+        "window",
+        "limited",
+        "focused"
+      ],
+      "expected_sources": [],
+      "answer": "The provided context does not explicitly state why chunking is used, only that documents are ingested and split into chunks and that each chunk is converted to a vector embedding so the system can find the most similar chunks to use as context for the LLM.",
+      "confidence": "high",
+      "confidence_score": 0.647,
+      "keyword_overlap": 0.25,
+      "llm_judge": {
+        "faithfulness": 1.0,
+        "relevance": 1.0
+      },
+      "retrieval_hit": null,
+      "citation_coverage": null,
+      "citations": {
+        "verified": [],
+        "unverified": [],
+        "total_cited": 0
+      },
+      "sources": [
+        "sample.txt (page None)",
         "sample2.txt (page None)"
+      ]
+    },
+    {
+      "question": "Can users verify the answers?",
+      "expected_keywords": [
+        "source",
+        "citations",
+        "documents",
+        "original"
+      ],
+      "expected_sources": [],
+      "answer": "Yes, users can verify answers by checking the original documents.",
+      "confidence": "high",
+      "confidence_score": 0.634,
+      "keyword_overlap": 0.5,
+      "llm_judge": {
+        "faithfulness": 1.0,
+        "relevance": 1.0
+      },
+      "retrieval_hit": null,
+      "citation_coverage": null,
+      "citations": {
+        "verified": [],
+        "unverified": [],
+        "total_cited": 0
+      },
+      "sources": [
+        "sample.txt (page None)",
+        "sample2.txt (page None)",
+        "Transparent_AI_Depression_Screening_Proposal.pdf (page 4)",
+        "Transparent_AI_Depression_Screening_Proposal.pdf (page 3)",
+        "Transparent_AI_Depression_Screening_Proposal.pdf (page 11)"
       ]
     },
     {
@@ -226,14 +252,17 @@
         "question",
         "answering"
       ],
+      "expected_sources": [],
       "answer": "RAG pipelines are useful for document Q&A systems.",
-      "confidence": "medium",
-      "confidence_score": 0.587,
+      "confidence": "high",
+      "confidence_score": 0.635,
       "keyword_overlap": 0.25,
       "llm_judge": {
         "faithfulness": 1.0,
         "relevance": 1.0
       },
+      "retrieval_hit": null,
+      "citation_coverage": null,
       "citations": {
         "verified": [],
         "unverified": [],
@@ -252,23 +281,25 @@
         "power",
         "factual"
       ],
+      "expected_sources": [],
       "answer": "RAG pipelines combine the power of LLMs with factual retrieval.",
       "confidence": "high",
-      "confidence_score": 0.665,
+      "confidence_score": 0.639,
       "keyword_overlap": 1.0,
       "llm_judge": {
         "faithfulness": 1.0,
         "relevance": 1.0
       },
+      "retrieval_hit": null,
+      "citation_coverage": null,
       "citations": {
         "verified": [],
         "unverified": [],
         "total_cited": 0
       },
       "sources": [
-        "sample2.txt (page None)",
         "sample.txt (page None)",
-        "Transparent_AI_Depression_Screening_Proposal.pdf (page 11)"
+        "sample2.txt (page None)"
       ]
     }
   ]

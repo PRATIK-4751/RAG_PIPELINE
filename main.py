@@ -4,8 +4,9 @@ from pathlib import Path
 
 from ingest import ingest_file
 from embed import VectorStore
-from retrieve import hybrid_search, format_context, get_sources, calibrate_confidence, verify_citations
-from generate import generate, check, rerank
+from retrieve import format_context, get_sources, calibrate_confidence, verify_citations
+from generate import generate, check, agent_loop
+from pipeline import retrieve_top
 from synthesis import detect_contradictions, synthesize
 
 
@@ -27,11 +28,7 @@ def do_query(args):
         print("ollama not running, start it first")
         return
 
-    if args.rerank:
-        results = hybrid_search(args.question, k=args.top_k * 2)
-        results = rerank(args.question, results, top_n=args.top_k)
-    else:
-        results = hybrid_search(args.question, k=args.top_k)
+    q, results = retrieve_top(args.question, k=args.top_k, rewrite=not args.no_rewrite, use_hyde=args.hyde, rerank=not args.no_rerank)
 
     if not results:
         print("no chunks found")
@@ -43,6 +40,8 @@ def do_query(args):
     conf = calibrate_confidence(results, ans, ctx)
     cites = verify_citations(ans, results)
 
+    if q != args.question:
+        print(f"search query: {q}")
     print(f"confidence: {conf['label']} ({conf['score']})")
     print(f"sources: {', '.join(get_sources(results))}\n")
 
@@ -79,7 +78,7 @@ def do_compare(args):
         print("ollama not running, start it first")
         return
 
-    results = hybrid_search(args.question, k=args.top_k)
+    q, results = retrieve_top(args.question, k=args.top_k, rewrite=not args.no_rewrite, use_hyde=args.hyde, rerank=not args.no_rerank)
     if not results:
         print("no chunks found")
         return
@@ -88,6 +87,8 @@ def do_compare(args):
     agreements = detect_contradictions(claims, args.question)
     ans = synthesize(args.question, claims, agreements)
 
+    if q != args.question:
+        print(f"search query: {q}")
     print(f"answer: {ans}\n")
     print(f"sources: {', '.join(get_sources(results))}\n")
 
@@ -103,7 +104,7 @@ def do_compare(args):
 
 
 def do_export(args):
-    results = hybrid_search(args.question, k=args.top_k)
+    q, results = retrieve_top(args.question, k=args.top_k, rewrite=not args.no_rewrite, use_hyde=args.hyde, rerank=not args.no_rerank)
     if not results:
         print("no chunks found")
         return
@@ -113,6 +114,7 @@ def do_export(args):
     cites = verify_citations(ans, results)
     data = {
         "question": args.question,
+        "search_query": q if q != args.question else None,
         "answer": ans,
         "confidence": conf,
         "sources": get_sources(results),
@@ -122,6 +124,22 @@ def do_export(args):
     with open(args.output, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     print(f"exported to {args.output}")
+
+
+def do_ask(args):
+    ok, _ = check()
+    if not ok:
+        print("ollama not running, start it first")
+        return
+
+    q = args.followup if args.followup else args.question
+    retrieve_fn = lambda q: retrieve_top(q, k=args.top_k)[1]
+    ans, history = agent_loop(q, retrieve_fn)
+
+    print(f"answer: {ans}")
+    followups = [h["query"] for h in history[1:]]
+    if followups:
+        print(f"follow ups: {', '.join(followups)}")
 
 
 def main():
@@ -135,7 +153,9 @@ def main():
     pq = sub.add_parser("query")
     pq.add_argument("question")
     pq.add_argument("--top-k", "-k", type=int, default=5)
-    pq.add_argument("--rerank", "-r", action="store_true")
+    pq.add_argument("--no-rerank", action="store_true")
+    pq.add_argument("--no-rewrite", action="store_true")
+    pq.add_argument("--hyde", action="store_true")
     pq.add_argument("--show-chunks", "-s", action="store_true")
     pq.set_defaults(func=do_query)
 
@@ -148,13 +168,25 @@ def main():
     pcm = sub.add_parser("compare")
     pcm.add_argument("question")
     pcm.add_argument("--top-k", "-k", type=int, default=5)
+    pcm.add_argument("--no-rerank", action="store_true")
+    pcm.add_argument("--no-rewrite", action="store_true")
+    pcm.add_argument("--hyde", action="store_true")
     pcm.set_defaults(func=do_compare)
 
     pe = sub.add_parser("export")
     pe.add_argument("question")
     pe.add_argument("--output", "-o", default="export.json")
     pe.add_argument("--top-k", "-k", type=int, default=5)
+    pe.add_argument("--no-rerank", action="store_true")
+    pe.add_argument("--no-rewrite", action="store_true")
+    pe.add_argument("--hyde", action="store_true")
     pe.set_defaults(func=do_export)
+
+    pa = sub.add_parser("ask")
+    pa.add_argument("question")
+    pa.add_argument("--followup", "-f")
+    pa.add_argument("--top-k", "-k", type=int, default=5)
+    pa.set_defaults(func=do_ask)
 
     args = p.parse_args()
     if hasattr(args, "func"):

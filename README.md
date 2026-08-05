@@ -21,14 +21,16 @@ ollama pull gemma4:31b-cloud
 python main.py ingest --file data/sample.txt
 python main.py query "what is RAG?"
 python main.py query "what are benefits?" --show-chunks
-python main.py query "what are benefits?" --rerank
+python main.py query "what are benefits?" --no-rewrite
+python main.py query "what are benefits?" --hyde
 python main.py compare "how do the documents describe x?"
+python main.py ask "what is RAG?"
 python main.py status
 python main.py clear
 python main.py export "what is RAG?" --output out.json
 ```
 
-query uses hybrid search (semantic + keyword) by default. add `--rerank` to run a cross-encoder over the top chunks. compare mode asks the model to find agreements and disagreements across the documents and writes one answer.
+query uses hybrid search (semantic + keyword), a query rewrite, and a cross-encoder rerank by default. pass `--no-rewrite` to skip the rewrite, `--hyde` to search with a hypothetical answer instead, or `--no-rerank` to skip the reranker. compare mode asks the model to find agreements and disagreements across the documents and writes one answer. ask mode runs a tiny agent loop: it answers, checks for a confident answer, and refines the query once if the first answer is weak.
 
 there is also a chat ui:
 
@@ -36,7 +38,17 @@ there is also a chat ui:
 python app.py
 ```
 
-it streams answers, keeps a short memory of the conversation, and has a mode dropdown to switch between normal answers and compare mode. the memory resets when you press clear.
+it streams answers, keeps a short memory of the conversation, and has an advanced toggle to turn the rewrite and rerank on or off. the memory resets when you press clear.
+
+## eval
+
+```bash
+python evaluate.py
+python evaluate.py --pipeline --limit 3
+python evaluate.py --pipeline --output eval/report.json
+```
+
+`evaluate.py` reads the questions in `eval/questions.json`, runs each one, and scores retrieval hit, keyword match, and answer quality with a judge. `--pipeline` turns on the same rewrite + rerank the cli uses, `--limit` stops early, and `--output` writes a report.
 
 ## files
 

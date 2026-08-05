@@ -1,7 +1,8 @@
 import gradio as gr
 
-from retrieve import hybrid_search, format_context, get_sources, calibrate_confidence, verify_citations
+from retrieve import format_context, get_sources, calibrate_confidence, verify_citations
 from generate import generate_stream, check
+from pipeline import retrieve_top
 from synthesis import detect_contradictions, synthesize
 from memory import Memory
 
@@ -15,7 +16,7 @@ def memory_context():
     return "Previous conversation:\n" + text + "\n\n"
 
 
-def respond(message, history, mode, top_k):
+def respond(message, history, mode, top_k, advanced=False):
     history = list(history or [])
     if not message.strip():
         yield history
@@ -28,7 +29,7 @@ def respond(message, history, mode, top_k):
         yield history
         return
 
-    results = hybrid_search(message, k=int(top_k))
+    _, results = retrieve_top(message, k=int(top_k), rewrite=advanced, use_hyde=False, rerank=advanced)
     if not results:
         history.append({"role": "user", "content": message})
         history.append({"role": "assistant", "content": "no chunks found"})
@@ -82,13 +83,15 @@ with gr.Blocks(title="local rag chat") as demo:
     with gr.Row():
         mode = gr.Radio(["answer", "compare"], value="answer", label="mode")
         top_k = gr.Slider(2, 10, value=5, step=1, label="chunks")
+    with gr.Row():
+        advanced = gr.Checkbox(value=False, label="advanced (query rewrite + rerank)")
     msg = gr.Textbox(label="question", placeholder="ask something")
     with gr.Row():
         send = gr.Button("send")
         clear = gr.Button("clear")
 
-    send.click(respond, [msg, chatbot, mode, top_k], chatbot)
-    msg.submit(respond, [msg, chatbot, mode, top_k], chatbot)
+    send.click(respond, [msg, chatbot, mode, top_k, advanced], chatbot)
+    msg.submit(respond, [msg, chatbot, mode, top_k, advanced], chatbot)
     clear.click(clear_chat, [], chatbot)
 
 demo.launch()
