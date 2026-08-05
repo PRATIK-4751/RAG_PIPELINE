@@ -1,0 +1,52 @@
+[
+    {
+        "question": "What is RAG?",
+        "expected_keywords": ["retrieval", "augmented", "generation"],
+        "source_doc": "sample.txt"
+    },
+    {
+        "question": "How are documents processed in the pipeline?",
+        "expected_keywords": ["ingested", "split", "chunks", "embeddings"],
+        "source_doc": "sample.txt"
+    },
+    {
+        "question": "What is the benefit of using RAG?",
+        "expected_keywords": ["grounded", "answers", "documents", "reduces", "hallucination"],
+        "source_doc": "sample.txt"
+    },
+    {
+        "question": "What happens when a user asks a question?",
+        "expected_keywords": ["similar", "chunks", "context", "LLM"],
+        "source_doc": "sample.txt"
+    },
+    {
+        "question": "How are documents split before embedding?",
+        "expected_keywords": ["chunks", "overlapping"],
+        "source_doc": "sample.txt"
+    },
+    {
+        "question": "What is the purpose of embeddings?",
+        "expected_keywords": ["vector", "numerical", "similarity"],
+        "source_doc": "sample.txt"
+    },
+    {
+        "question": "Why use chunking in RAG systems?",
+        "expected_keywords": ["context", "window", "limited", "focused"],
+        "source_doc": "sample.txt"
+    },
+    {
+        "question": "Can users verify the answers?",
+        "expected_keywords": ["source", "citations", "documents", "original"],
+        "source_doc": "sample.txt"
+    },
+    {
+        "question": "What type of systems are RAG pipelines useful for?",
+        "expected_keywords": ["document", "QA", "question", "answering"],
+        "source_doc": "sample.txt"
+    },
+    {
+        "question": "What does RAG combine?",
+        "expected_keywords": ["LLMs", "retrieval", "power", "factual"],
+        "source_doc": "sample.txt"
+    }
+]

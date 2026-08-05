@@ -1,0 +1,295 @@
+{
+  "total_questions": 10,
+  "avg_keyword_overlap": 0.75,
+  "avg_llm_judge": 0.9359999999999999,
+  "pass_rate": 0.8,
+  "results": [
+    {
+      "question": "What is RAG?",
+      "expected_keywords": [
+        "retrieval",
+        "augmented",
+        "generation"
+      ],
+      "answer": "RAG is a system that retrieves relevant context from documents to generate accurate answers [2] and combines the power of LLMs with factual retrieval [4], [5]. \n\n**How it Works:**\n1. Documents are ingested and split into chunks [2].\n2. Each chunk is converted into a vector embedding [2], [4].\n3. When a user asks a question, the system finds the most similar chunks and uses them as context for the LLM [4].\n\n**Benefits:**\n* It provides grounded answers based on actual documents, which reduces hallucination and allows users to verify answers via source citations [4].\n\n**Advanced Techniques:**\nModern RAG systems have evolved to include:\n* **Query rewriting:** Reformulating queries to improve recall [1].\n* **Re-ranking:** Using a cross-encoder to re-score retrieved chunks for better precision [1].\n* **Multi-hop retrieval:** Decomposing complex questions into separate sub-questions [1].\n* **Citations:** Generating answers with inline citations linking to specific source chunks [1], [3].\n\n**Gaps in Information:**\nThe provided text does not include a complete definition of what the acronym \"RAG\" stands for, as the source text is cut off [5].",
+      "confidence": 0.704,
+      "keyword_overlap": 0.3333333333333333,
+      "sources": [
+        "sample2.txt",
+        "sample.txt"
+      ],
+      "llm_judge": {
+        "accuracy": 1.0,
+        "completeness": 0.8,
+        "groundedness": 1.0,
+        "clarity": 1.0,
+        "citation_quality": 1.0,
+        "overall": 0.96,
+        "strengths": "The answer is exceptionally well-structured, highly readable, and strictly grounded in the provided context. Citations are used consistently throughout the text.",
+        "weaknesses": "The answer fails to explicitly define the acronym RAG (Retrieval-Augmented Generation), although it correctly notes this as a gap in the provided text.",
+        "notes": "While the expected keywords were not all present in the final answer, the model correctly identified that the source text was insufficient to provide the full expansion of the acronym, demonstrating high groundedness."
+      },
+      "agreement_level": "agreement",
+      "gap_coverage": 0.4
+    },
+    {
+      "question": "How are documents processed in the pipeline?",
+      "expected_keywords": [
+        "ingested",
+        "split",
+        "chunks",
+        "embeddings"
+      ],
+      "answer": "Documents are processed in the pipeline through the following steps:\n\n1.  **Ingestion and Splitting**: Documents are ingested and split into chunks [2].\n2.  **Embedding**: Each chunk is converted into a vector embedding [1], [2].\n3.  **Retrieval**: When a user asks a question, the system identifies the most similar chunks and utilizes them as context for the LLM [1].\n\n**Gaps in information**: The provided text does not specify the initial ingestion method, the specific process used to split documents into chunks, the model used for vector embedding, or the specific mechanism (such as a similarity metric or database) used to find the most similar chunks.",
+      "confidence": 0.701,
+      "keyword_overlap": 0.75,
+      "sources": [
+        "sample.txt",
+        "sample2.txt"
+      ],
+      "llm_judge": {
+        "accuracy": 1,
+        "completeness": 1,
+        "groundedness": 1,
+        "clarity": 1,
+        "citation_quality": 1,
+        "overall": 1,
+        "strengths": "The answer is precise, well-structured, and uses all expected keywords. It correctly identifies the limits of the provided context through a 'Gaps in information' section, preventing hallucination.",
+        "weaknesses": "None identified.",
+        "notes": "The response perfectly adheres to the provided context and follows a logical flow."
+      },
+      "agreement_level": "agreement",
+      "gap_coverage": 0.4
+    },
+    {
+      "question": "What is the benefit of using RAG?",
+      "expected_keywords": [
+        "grounded",
+        "answers",
+        "documents",
+        "reduces",
+        "hallucination"
+      ],
+      "answer": "The benefits of using RAG are as follows:\n\n**General RAG Benefits**\n*   **Grounded and Accurate Answers:** RAG provides accurate answers grounded in actual documents [2, 4].\n*   **Reduction of Hallucination:** The use of RAG reduces hallucination [2, 5].\n*   **Verification and Transparency:** It provides source citations, allowing users to verify answers by checking the original documents [2].\n*   **Functionality:** RAG pipelines combine the power of LLMs with factual retrieval, making them useful for document Q&A systems [2, 5].\n\n**Benefits of Advanced RAG**\n*   **Complex Query Handling:** Advanced RAG offers higher accuracy on complex questions and better handling of multi-document queries [3].\n*   **Enhanced Trust and Precision:** It improves user trust through transparency and further reduces hallucination through structured citation [3].\n\n**Known Gaps**\nThere is a gap in the provided context regarding the comprehensive list of general RAG benefits, as the text in sample.txt under 'Section 3: Benefits' is cut off [5].",
+      "confidence": 0.715,
+      "keyword_overlap": 1.0,
+      "sources": [
+        "sample2.txt",
+        "sample.txt"
+      ],
+      "llm_judge": {
+        "accuracy": 1,
+        "completeness": 1,
+        "groundedness": 1,
+        "clarity": 1,
+        "citation_quality": 1,
+        "overall": 1,
+        "strengths": "The answer is exceptionally well-structured, covering both general and advanced RAG benefits. It adheres strictly to the provided context and includes all expected keywords. The inclusion of a 'Known Gaps' section demonstrates high intellectual honesty and precision regarding the source material.",
+        "weaknesses": "None identified.",
+        "notes": "The model correctly identified that the source text was truncated and explicitly mentioned this in the response, which prevents the user from assuming the list is exhaustive when the data was incomplete."
+      },
+      "agreement_level": "unrelated",
+      "gap_coverage": 0.4
+    },
+    {
+      "question": "What happens when a user asks a question?",
+      "expected_keywords": [
+        "similar",
+        "chunks",
+        "context",
+        "LLM"
+      ],
+      "answer": "When a user asks a question, the system finds the most similar chunks and uses them as context for the LLM [1].",
+      "confidence": 0.52,
+      "keyword_overlap": 1.0,
+      "sources": [
+        "sample.txt",
+        "sample2.txt"
+      ],
+      "llm_judge": {
+        "accuracy": 1,
+        "completeness": 1,
+        "groundedness": 1,
+        "clarity": 1,
+        "citation_quality": 1,
+        "overall": 1.0,
+        "strengths": "The answer is concise, accurate, and includes all required keywords. It correctly cites the source provided in the context.",
+        "weaknesses": "None identified.",
+        "notes": "The response perfectly aligns with the expected keywords and the provided context."
+      },
+      "agreement_level": "agreement",
+      "gap_coverage": 1.0
+    },
+    {
+      "question": "How are documents split before embedding?",
+      "expected_keywords": [
+        "chunks",
+        "overlapping"
+      ],
+      "answer": "Documents are ingested and split into chunks before each chunk is converted into a vector embedding [1], [2]. \n\nHowever, the provided text does not specify the exact method, criteria, or logic used to split the documents into these chunks (such as character count, paragraph breaks, or overlapping windows).",
+      "confidence": 0.58,
+      "keyword_overlap": 1.0,
+      "sources": [
+        "sample.txt",
+        "sample2.txt"
+      ],
+      "llm_judge": {
+        "accuracy": 1,
+        "completeness": 0,
+        "groundedness": 1,
+        "clarity": 1,
+        "citation_quality": 1,
+        "overall": 0.8,
+        "strengths": "The answer is honest and grounded. It correctly identifies that while splitting occurs, the specific methodology is missing from the provided context, preventing hallucinations.",
+        "weaknesses": "The answer fails to include key technical details (such as 'overlapping') because those details were missing from the context, meaning it does not satisfy the expected keyword criteria.",
+        "notes": "The model performed correctly by admitting the context was insufficient. The low completeness score is a reflection of the provided context's lack of detail, rather than a failure of the LLM's reasoning."
+      },
+      "agreement_level": "agreement",
+      "gap_coverage": 0.2
+    },
+    {
+      "question": "What is the purpose of embeddings?",
+      "expected_keywords": [
+        "vector",
+        "numerical",
+        "similarity"
+      ],
+      "answer": "Based on the provided text, embeddings are used for the following purposes:\n\n*   **Conversion of Text:** They are used to convert document chunks into vector embeddings [1, 3].\n*   **Similarity Retrieval:** The system uses embeddings to find text chunks that are similar to a user's question [1, 3].\n*   **Context Provision:** By finding the most similar chunks, embeddings allow the system to provide relevant context to the LLM to generate accurate answers [1, 3].\n\n**Known Gaps:** The provided text does not include a formal definition of what embeddings are or their purpose/function outside of this specific RAG pipeline.",
+      "confidence": 0.568,
+      "keyword_overlap": 0.6666666666666666,
+      "sources": [
+        "sample.txt",
+        "sample2.txt"
+      ],
+      "llm_judge": {
+        "accuracy": 1,
+        "completeness": 1,
+        "groundedness": 1,
+        "clarity": 1,
+        "citation_quality": 1,
+        "overall": 1,
+        "strengths": "The answer is perfectly aligned with the provided context, maintains a high level of transparency regarding the limitations of the source material (Known Gaps), and uses a clear, structured format.",
+        "weaknesses": "None identified based on the provided constraints.",
+        "notes": "The answer successfully incorporates the expected keywords ('vector', 'similarity') and correctly acknowledges that the context only explains embeddings within the scope of a RAG pipeline."
+      },
+      "agreement_level": "agreement",
+      "gap_coverage": 0.3
+    },
+    {
+      "question": "Why use chunking in RAG systems?",
+      "expected_keywords": [
+        "context",
+        "window",
+        "limited",
+        "focused"
+      ],
+      "answer": "Based on the provided text, chunking is used in RAG systems to convert document segments into vector embeddings for retrieval [5]. This process involves documents being ingested and split into chunks, with each chunk then converted to a vector embedding [2].\n\n**Known Gaps:**\nThe provided context does not specify the detailed reasons why chunking is used, such as for overcoming token limits, improving retrieval precision, or managing context window constraints, nor does it provide a formal definition or purpose of chunking [5].",
+      "confidence": 0.6,
+      "keyword_overlap": 0.5,
+      "sources": [
+        "sample2.txt",
+        "sample.txt"
+      ],
+      "llm_judge": {
+        "accuracy": 1,
+        "completeness": 0,
+        "groundedness": 1,
+        "clarity": 1,
+        "citation_quality": 1,
+        "overall": 0.6,
+        "strengths": "The answer is strictly grounded in the provided context and avoids hallucinating outside information. It clearly identifies the gaps in the source material.",
+        "weaknesses": "The answer fails to address the 'why' (the purpose/benefit) of chunking, as it does not contain the expected keywords regarding context windows or token limits. While it describes the process, it doesn't explain the necessity.",
+        "notes": "The response is a 'honest' failure; it correctly identifies that the provided context is insufficient to answer the question fully, but therefore cannot be marked as 'complete'."
+      },
+      "agreement_level": "agreement",
+      "gap_coverage": 0.2
+    },
+    {
+      "question": "Can users verify the answers?",
+      "expected_keywords": [
+        "source",
+        "citations",
+        "documents",
+        "original"
+      ],
+      "answer": "Yes, users can verify answers by checking the original documents [2]. This is possible because the system provides source citations [2] and can generate answers with inline citations that link to specific source chunks [3].",
+      "confidence": 0.665,
+      "keyword_overlap": 1.0,
+      "sources": [
+        "sample.txt",
+        "sample2.txt"
+      ],
+      "llm_judge": {
+        "accuracy": 1,
+        "completeness": 1,
+        "groundedness": 1,
+        "clarity": 1,
+        "citation_quality": 1,
+        "overall": 1,
+        "strengths": "The answer is direct, fully addresses the question, and uses precise terminology from the expected keywords. Citations are used correctly to attribute information to the sources.",
+        "weaknesses": "None identified.",
+        "notes": "The response perfectly aligns with the provided context and expected keywords."
+      },
+      "agreement_level": "agreement",
+      "gap_coverage": 1.0
+    },
+    {
+      "question": "What type of systems are RAG pipelines useful for?",
+      "expected_keywords": [
+        "document",
+        "QA",
+        "question",
+        "answering"
+      ],
+      "answer": "RAG pipelines are useful for document Q&A systems [2, 5].",
+      "confidence": 0.705,
+      "keyword_overlap": 0.25,
+      "sources": [
+        "sample2.txt",
+        "sample.txt"
+      ],
+      "llm_judge": {
+        "accuracy": 1,
+        "completeness": 1,
+        "groundedness": 1,
+        "clarity": 1,
+        "citation_quality": 1,
+        "overall": 1,
+        "strengths": "The answer is concise, accurate, and directly addresses the question while utilizing provided citations.",
+        "weaknesses": "None identified.",
+        "notes": "All expected keywords are present or represented by common abbreviations (Q&A), and the answer is fully grounded in the provided context."
+      },
+      "agreement_level": "agreement",
+      "gap_coverage": 0.5
+    },
+    {
+      "question": "What does RAG combine?",
+      "expected_keywords": [
+        "LLMs",
+        "retrieval",
+        "power",
+        "factual"
+      ],
+      "answer": "RAG combines the power of LLMs with factual retrieval [4], [5].",
+      "confidence": 0.582,
+      "keyword_overlap": 1.0,
+      "sources": [
+        "sample2.txt",
+        "sample.txt"
+      ],
+      "llm_judge": {
+        "accuracy": 1,
+        "completeness": 1,
+        "groundedness": 1,
+        "clarity": 1,
+        "citation_quality": 1,
+        "overall": 1,
+        "strengths": "The answer is concise, factually accurate, contains all expected keywords, and provides specific citations.",
+        "weaknesses": "None identified.",
+        "notes": "The response perfectly aligns with the provided expected keywords and the nature of RAG."
+      },
+      "agreement_level": "agreement",
+      "gap_coverage": 1.0
+    }
+  ]
+}

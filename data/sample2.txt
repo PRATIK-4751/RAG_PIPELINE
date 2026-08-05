@@ -1,0 +1,19 @@
+Advanced RAG Techniques
+
+RAG systems have evolved beyond basic retrieval. Modern approaches include:
+
+1. Query rewriting - The user query is expanded or reformulated before retrieval to improve recall.
+2. Re-ranking - Retrieved chunks are re-scored using a cross-encoder for better precision.
+3. Multi-hop retrieval - Complex questions are decomposed into sub-questions, each retrieved separately.
+4. RAG with citations - The model generates answers with inline citations linking to specific source chunks.
+
+Benefits of advanced RAG:
+- Higher accuracy on complex questions
+- Better handling of multi-document queries
+- Reduced hallucination through structured citation
+- Improved user trust through transparency
+
+Challenges:
+- Increased latency from multi-step retrieval
+- More complex evaluation needed
+- Computational cost of re-ranking

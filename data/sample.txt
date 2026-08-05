@@ -1,0 +1,24 @@
+Sample Document for RAG Testing
+
+This is a sample document to test our RAG pipeline.
+The document contains multiple paragraphs for chunking tests.
+
+Section 1: Introduction
+The retrieval augmented generation system retrieves relevant
+context from documents and generates accurate answers.
+It uses embeddings to find similar text chunks.
+
+Section 2: How It Works
+First, documents are ingested and split into chunks.
+Each chunk is converted to a vector embedding.
+When a user asks a question, the system finds the most
+similar chunks and uses them as context for the LLM.
+
+Section 3: Benefits
+The main benefit is grounded answers based on actual documents.
+This reduces hallucination and provides source citations.
+Users can verify answers by checking the original documents.
+
+Conclusion
+RAG pipelines are useful for document Q&A systems.
+They combine the power of LLMs with factual retrieval.
