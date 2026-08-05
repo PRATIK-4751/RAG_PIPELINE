@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import pdfplumber
 
 
@@ -28,7 +29,73 @@ def chunk_text(text, size=500, overlap=100):
     return out
 
 
-def ingest_file(path):
+def split_paragraphs(text):
+    # split on double newlines or single newlines followed by sentence end
+    paras = re.split(r"\n\s*\n", text)
+    out = []
+    for p in paras:
+        p = p.strip()
+        if p:
+            out.append(p)
+    return out
+
+
+def split_sentences(text):
+    # simple sentence splitter
+    sents = re.split(r"(?<=[.!?])\s+", text)
+    return [s.strip() for s in sents if s.strip()]
+
+
+def recursive_chunk(text, size=500, overlap=100):
+    # try paragraphs first, then sentences, then chars
+    pieces = split_paragraphs(text)
+    if not pieces:
+        return chunk_text(text, size, overlap)
+
+    out = []
+    current = ""
+    for p in pieces:
+        if len(current) + len(p) + 1 <= size:
+            current = (current + "\n" + p).strip()
+        else:
+            if current:
+                out.append(current)
+            if len(p) > size:
+                # paragraph too big, fall back to sentences
+                sents = split_sentences(p)
+                cur = ""
+                for s in sents:
+                    if len(cur) + len(s) + 1 <= size:
+                        cur = (cur + " " + s).strip()
+                    else:
+                        if cur:
+                            out.append(cur)
+                        if len(s) > size:
+                            # sentence too big, char split
+                            out.extend(chunk_text(s, size, overlap))
+                            cur = ""
+                        else:
+                            cur = s
+                if cur:
+                    out.append(cur)
+                current = ""
+            else:
+                current = p
+    if current:
+        out.append(current)
+
+    # add overlap
+    if overlap > 0 and len(out) > 1:
+        overlapped = [out[0]]
+        for i in range(1, len(out)):
+            tail = overlapped[-1][-overlap:] if len(overlapped[-1]) > overlap else overlapped[-1]
+            overlapped.append((tail + " " + out[i]).strip())
+        out = overlapped
+
+    return out
+
+
+def ingest_file(path, mode="recursive"):
     path = Path(path)
     if not path.exists():
         raise FileNotFoundError(path)
@@ -38,9 +105,11 @@ def ingest_file(path):
     chunks = []
     n = 0
 
+    chunk_fn = recursive_chunk if mode == "recursive" else chunk_text
+
     if suffix == ".pdf":
         for page_text, page_num in read_pdf(path):
-            for c in chunk_text(page_text):
+            for c in chunk_fn(page_text):
                 chunks.append({
                     "text": c,
                     "file_name": name,
@@ -49,7 +118,7 @@ def ingest_file(path):
                 })
                 n += 1
     elif suffix == ".txt":
-        for c in chunk_text(read_txt(path)):
+        for c in chunk_fn(read_txt(path)):
             chunks.append({
                 "text": c,
                 "file_name": name,
