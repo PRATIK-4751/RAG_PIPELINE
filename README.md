@@ -100,17 +100,19 @@ python evaluate.py --pipeline --output eval/report.json
 | Relevance | LLM judge: does the answer address the question (0–1) |
 | Citation coverage | Fraction of cited sources verified against retrieved chunks |
 
-<!-- RESULTS_PLACEHOLDER: fill after running evaluate.py -->
+## Evaluation Results
 
-| Metric | Value |
-| --- | --- |
-| Questions run | _TBD_ |
-| Pass rate (overlap >= 0.5) | _TBD_ |
-| Avg keyword overlap | _TBD_ |
-| Avg faithfulness | _TBD_ |
-| Avg relevance | _TBD_ |
-| Retrieval hit rate | _TBD_ |
-| Avg citation coverage | _TBD_ |
+Latest run (`eval/report.json`), 10 questions:
+
+| Metric | Score |
+|:---|:---|
+| Questions run | 10 |
+| Pass rate (overlap >= 0.5) | 70% |
+| Avg keyword overlap | 0.625 |
+| LLM faithfulness | 1.00 |
+| LLM relevance | 1.00 |
+| Retrieval hit rate | n/a (no expected sources defined) |
+| Avg citation coverage | n/a (no expected sources defined) |
 
 ## Project Structure
 
