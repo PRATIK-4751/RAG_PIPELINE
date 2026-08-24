@@ -112,16 +112,6 @@ python evaluate.py --pipeline --output eval/report.json
 | Retrieval hit rate | _TBD_ |
 | Avg citation coverage | _TBD_ |
 
-## Screenshots
-
-_Coming soon — add terminal output and chat UI captures here._
-
-| Chat UI | Query with chunks shown |
-| --- | --- |
-| ![chat ui](docs/screenshots/chat-ui.png) | ![query chunks](docs/screenshots/query-chunks.png) |
-
-<!-- Drop images into docs/screenshots/ and update the paths above. -->
-
 ## Project Structure
 
 - `ingest.py` — reads pdf/txt, splits into chunks
